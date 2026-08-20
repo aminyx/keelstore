@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# keelstore pre-commit hook.
+#
+# There is no CI for this repository, so this hook is the gate. It runs the
+# same checks `make check` runs and refuses the commit if any of them fail.
+#
+# Install it with:
+#
+#     make hooks          # git config core.hooksPath .githooks
+#
+# Skip it once, deliberately, with `git commit --no-verify`.
+
+set -e
+
+echo "pre-commit: running the keelstore checks"
+
+if command -v make >/dev/null 2>&1; then
+	make check
+	echo "pre-commit: ok"
+	exit 0
+fi
+
+# No make on this machine (a plain Windows box with Git Bash, for example).
+# Run the same steps by hand so the gate still applies.
+echo "pre-commit: make not found, running the checks directly"
+
+GOFLAGS=-buildvcs=false
+export GOFLAGS
+
+echo "==> gofmt"
+unformatted="$(gofmt -s -l .)"
+if [ -n "$unformatted" ]; then
+	echo "these files need gofmt -s -w:"
+	echo "$unformatted"
+	exit 1
+fi
+echo "    clean"
+
+echo "==> go vet"
+go vet ./...
+echo "    clean"
+
+echo "==> go test"
+go test ./...
+
+echo "==> go build"
+go build -o bin/keelctl ./cmd/keelctl
+
+echo "==> benchmark smoke test"
+go test -run='^$' -bench=. -benchtime=1x ./... >/dev/null
+echo "    all benchmarks ran"
+
+echo "pre-commit: ok"

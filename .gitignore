@@ -1,0 +1,33 @@
+# Build output. Every binary pattern is anchored to the repository root
+# with a leading slash, so that source directories such as cmd/keelctl are
+# never swallowed by a bare `keelctl` rule.
+/bin/
+/dist/
+/keelctl
+/keelctl.exe
+
+# Test binaries and coverage.
+/*.test
+/*.test.exe
+/*.exe
+/*.out
+/coverage.out
+/coverage.html
+
+# Fuzzing corpus cached by the toolchain (checked-in seeds live in
+# testdata/fuzz and are not ignored).
+/testdata/fuzz/*/[0-9a-f]*
+
+# Store directories created by keelctl or by hand while poking around.
+/keeldata/
+/*.sst
+/*.wal
+/MANIFEST
+/MANIFEST.tmp
+
+# Editors and operating systems.
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
