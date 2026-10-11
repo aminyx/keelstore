@@ -716,7 +716,7 @@ Reading the numbers:
 
 ## Testing
 
-116 test functions, 2 fuzz targets and 10 benchmarks. The suite is offline
+117 test functions, 2 fuzz targets and 10 benchmarks. The suite is offline
 and hermetic — no network, no fixtures outside `t.TempDir()`, no sleeping
 on wall-clock time except where a background goroutine is genuinely being
 waited for — and `go test ./...` finishes in about 85 seconds.
