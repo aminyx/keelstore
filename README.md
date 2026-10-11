@@ -1,5 +1,8 @@
 # keelstore
 
+> **Учебная реализация, созданная вместе с AI-агентом** (август 2026). Цель — разобраться, как устроена такая система изнутри; архитектуру и ограничения автор готов объяснить. Это не production-библиотека.
+> *A learning implementation built together with an AI agent; not a production library.*
+
 **An embedded LSM-tree key/value store, written from scratch in Go.**
 
 ![Go 1.25](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)
